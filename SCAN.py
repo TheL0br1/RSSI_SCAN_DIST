@@ -161,7 +161,11 @@ class RSSI_Localizer(object):
 
     def getNodePosition(self, signalStrengths):
         apNodes = self.getDistancesForAllAPs(signalStrengths)
+        print(apNodes)
+        #return
         a, b = self.createMatrices(apNodes)
+        print(a)
+        print(b)
         position = self.computePosition(a, b)
         # print(a)
         # print(b)
