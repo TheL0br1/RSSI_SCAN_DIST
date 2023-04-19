@@ -21,4 +21,16 @@ accessPoints = [{
              'signal': -50
          }, 
          'name': 'rssid_test'
+     },
+    {
+        'signalAttenuation': 2.4,
+         'location': {
+             'y': 3,
+             'x': 3
+         },
+         'reference': {
+             'distance': 1,
+             'signal': -50
+         },
+         'name': 'rssid_test3'
      }]

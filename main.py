@@ -13,9 +13,10 @@ def main():
         ap_info = rssi_scanner.getAPinfo(networks=ssids, sudo=True)
         rssi_values = [ap['signal']/2-100 for ap in ap_info]
         if len(rssi_values)>=3:
-          #  print(rssi_values)
+            print(ap_info)
+            print(rssi_values)
             print(localizer.getNodePosition(rssi_values))
-        print(ap_info)
+
         time.sleep(3)
 
   # print(position)
