@@ -1,31 +1,82 @@
-import SCAN as rssi
-import locale
 import time
+import matplotlib.pyplot as plt
+
+from win32wifi import Win32Wifi as ww
+
+import SCAN as rssi
 from config import accessPoints
 
 
+def refresh_data():
+    interfaces = ww.getWirelessInterfaces()
+    # print("WLAN Interfaces: {:d}".format(len(interfaces)))
+    handle = ww.WlanOpenHandle()
+    for idx, interface in enumerate(interfaces):
+        #  print(
+        #     "\n  {:d}\n  GUID: [{:s}]\n  Description: [{:s}]".format(idx, interface.guid_string, interface.description))
+        try:
+            scan_result = ww.WlanScan(handle, interface.guid)
+        except:
+            #     print(sys.exc_info())
+            continue
+    # print("\n  Scan result: {:d}".format(scan_result))
+    ww.WlanCloseHandle(handle)
+
+fig, ax = plt.subplots()
+def draw(pos):
+
+
+    # Создаем полотно и оси координат
+    # Рисуем точки
+    plt.cla()
+    ax.scatter(pos[0], pos[1])
+    ax.scatter([0,6,6], [0,0,4])
+
+    # Добавляем подписи осей
+    ax.set_xlabel('X')
+    ax.set_ylabel('Y')
+    ax.set_xlim([-10, 12])
+    ax.set_ylim([-6, 8])
+
+    # Добавляем заголовок
+    ax.set_title('Координаты точек')
+
+    # Показываем график
+    plt.show(block=False)
+    plt.pause(0.01)
+
+
 def main():
+    i = 0
+    rssi_values = [0,0,0,0,0,0,0,0,0,0,0]
+    accessPoints_s = sorted(accessPoints, key=lambda x: (x['ssid']))
     while True:
+        i+=1
+        refresh_data()
         rssi_scanner = rssi.RSSI_Scan("wlanapi")
-        ssids = ["rssid_test3", "rssid_test2", "rssid_test"]
-        ap_info1 = rssi_scanner.getRawNetworkScan(sudo=True)
-        decoded_string = ap_info1['output'].decode('cp866')
+        ssids = ["rssid_test2", "rssid_test", "rssid_test3"]
+        # ap_info1 = rssi_scanner.getRawNetworkScan(sudo=True)
+        # decoded_string = ap_info1['output'].decode('cp866')
         # print(decoded_string)
-        localizer = rssi.RSSI_Localizer(accessPoints=accessPoints)
+        localizer = rssi.RSSI_Localizer(accessPoints=accessPoints_s)
         ap_info = rssi_scanner.getAPinfo(networks=ssids, sudo=True)
-        rssi_values = [ap['signal'] / 2 - 100 for ap in ap_info]
-        if len(rssi_values) >= 3:
-            print(ap_info)
+        ap_info = sorted(ap_info, key=lambda x: (x['ssid']))
+        rssi_values = [sum(pair) for pair in zip(rssi_values, [ap['signal'] / 2 - 100 for ap in ap_info])]
+        print(ap_info)
+        if len(rssi_values) >= 3 and i>=10:
+            rssi_values = [x/(i) for x in rssi_values]
             print(rssi_values)
-            print(localizer.getNodePosition(rssi_values))
-        time.sleep(3)
+
+            i=0
+            draw(localizer.getNodePosition(rssi_values))
+            rssi_values = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+        time.sleep(0.50)
 
 
-# print(position)
 
 
-# Press the green button in the gutter to run the script.
+
 if __name__ == '__main__':
     main()
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
