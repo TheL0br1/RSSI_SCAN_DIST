@@ -16,7 +16,6 @@ def main():
             print(ap_info)
             print(rssi_values)
             print(localizer.getNodePosition(rssi_values))
-
         time.sleep(3)
 
   # print(position)
