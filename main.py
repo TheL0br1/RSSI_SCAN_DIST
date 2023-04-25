@@ -7,6 +7,9 @@ import SCAN as rssi
 from config import accessPoints
 
 
+fig, ax = plt.subplots()
+accessPoints_s = sorted(accessPoints, key=lambda x: (x['ssid']))
+
 def refresh_data():
     interfaces = ww.getWirelessInterfaces()
     # print("WLAN Interfaces: {:d}".format(len(interfaces)))
@@ -22,16 +25,18 @@ def refresh_data():
     # print("\n  Scan result: {:d}".format(scan_result))
     ww.WlanCloseHandle(handle)
 
-fig, ax = plt.subplots()
 def draw(pos):
 
 
     # Создаем полотно и оси координат
     # Рисуем точки
     plt.cla()
-    ax.scatter(pos[0], pos[1])
-    ax.scatter([0,6,6], [0,0,4])
 
+    for x in accessPoints_s:
+        circle = plt.Circle((x['location']['x'], x['location']['y']), x['distance'], color='blue', fill = False)
+        ax.add_artist(circle)
+    ax.scatter(pos[0], pos[1])
+    ax.scatter([6,6,0,0],[0,4,0,4])
     # Добавляем подписи осей
     ax.set_xlabel('X')
     ax.set_ylabel('Y')
@@ -49,12 +54,12 @@ def draw(pos):
 def main():
     i = 0
     rssi_values = [0,0,0,0,0,0,0,0,0,0,0]
-    accessPoints_s = sorted(accessPoints, key=lambda x: (x['ssid']))
+
     while True:
         i+=1
         refresh_data()
         rssi_scanner = rssi.RSSI_Scan("wlanapi")
-        ssids = ["rssid_test2", "rssid_test", "rssid_test3"]
+        ssids = ["rssid_test2", "rssid_test", "rssid_test3", "rssid_test4"]
         # ap_info1 = rssi_scanner.getRawNetworkScan(sudo=True)
         # decoded_string = ap_info1['output'].decode('cp866')
         # print(decoded_string)

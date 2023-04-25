@@ -1,36 +1,49 @@
+signalAttenuation = 1.7
+distance = 1
 accessPoints = [{
-    'signalAttenuation': 2.4,
+    'signalAttenuation': signalAttenuation,
     'location': {
         'y': 0,
         'x': 6
     },
     'reference': {
-        'distance': 0.8,
+        'distance': distance,
         'signal': -50
     },
     'ssid': 'rssid_test2'
 },
     {
-        'signalAttenuation':2.4,
+        'signalAttenuation': signalAttenuation,
         'location': {
             'y': 0,
             'x': 0
         },
         'reference': {
-            'distance': 1,
+            'distance': distance,
             'signal': -50
         },
         'ssid': 'rssid_test'
     },
     {
-        'signalAttenuation': 2.4,
+        'signalAttenuation': signalAttenuation,
         'location': {
             'y': 4,
-            'x': 6
+            'x': 0
         },
         'reference': {
-            'distance': 0.8,
+            'distance': distance,
             'signal': -50
         },
         'ssid': 'rssid_test3'
-    }]
+    },
+    {'signalAttenuation': signalAttenuation,
+    'location': {
+        'y': 4,
+        'x': 6
+    },
+    'reference': {
+        'distance': distance,
+        'signal': -50
+    },
+    'ssid': 'rssid_test4'
+}]
