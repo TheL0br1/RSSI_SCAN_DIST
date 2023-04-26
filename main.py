@@ -1,6 +1,6 @@
 import time
 import matplotlib.pyplot as plt
-
+from firebase import *
 from win32wifi import Win32Wifi as ww
 
 import SCAN as rssi
@@ -30,6 +30,7 @@ def draw(pos):
 
     # Создаем полотно и оси координат
     # Рисуем точки
+    write_position("test", pos[0], pos[1])
     plt.cla()
 
     for x in accessPoints_s:
@@ -54,7 +55,7 @@ def draw(pos):
 def main():
     i = 0
     rssi_values = [0,0,0,0,0,0,0,0,0,0,0]
-
+    connect_to_RTDB()
     while True:
         i+=1
         refresh_data()
