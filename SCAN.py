@@ -1,6 +1,6 @@
 import subprocess
-import numpy
 
+import numpy
 
 
 class RSSI_Scan(object):
@@ -106,7 +106,6 @@ class RSSI_Localizer(object):
         accessPoint.update({'distance': distanceFromAP})
         return accessPoint
 
-
     def getDistancesForAllAPs(self, signalStrengths):
         apNodes = []
         for i in range(len(self.accessPoints)):
@@ -162,13 +161,11 @@ class RSSI_Localizer(object):
     def getNodePosition(self, signalStrengths):
         apNodes = self.getDistancesForAllAPs(signalStrengths)
         print(apNodes)
-        #return
+        # return
         a, b = self.createMatrices(apNodes)
-       # print(a)
-       # print(b)
+        # print(a)
+        # print(b)
         position = self.computePosition(a, b)
         # print(a)
         # print(b)
         return position
-
-

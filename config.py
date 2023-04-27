@@ -37,13 +37,13 @@ accessPoints = [{
         'ssid': 'rssid_test3'
     },
     {'signalAttenuation': signalAttenuation,
-    'location': {
-        'y': 4,
-        'x': 6
-    },
-    'reference': {
-        'distance': distance,
-        'signal': -50
-    },
-    'ssid': 'rssid_test4'
-}]
+     'location': {
+         'y': 4,
+         'x': 6
+     },
+     'reference': {
+         'distance': distance,
+         'signal': -50
+     },
+     'ssid': 'rssid_test4'
+     }]
