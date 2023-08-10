@@ -52,13 +52,13 @@ def calculate_position():
             i = 0
             pos = localizer.getNodePosition(rssi_values)
             if pos[0] < boundaries['min']['x']:
-                pos[0] = 0
+                pos[0] = boundaries['min']['x']
             if pos[0] > boundaries['max']['x']:
-                pos[0] = 14
+                pos[0] = boundaries['max']['x']
             if pos[1] > boundaries['max']['y']:
-                pos[1] = 1.5
+                pos[1] = boundaries['max']['y']
             if pos[1] < boundaries['min']['y']:
-                pos[1] = 0
+                pos[1] = boundaries['min']['y']
             write_position("modelWorkers/"+model_id+"/gena/coordinates", pos[0], pos[1])
 
             rssi_values = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
