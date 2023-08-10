@@ -1,0 +1,9 @@
+{
+apiKey: "AIzaSyAely9-ilJNLL47cagehLw6oQEkgZ4kZBk",
+  authDomain: "esp-test-6caf4.firebaseapp.com",
+  databaseURL: "https://esp-test-6caf4-default-rtdb.firebaseio.com",
+  projectId: "esp-test-6caf4",
+  storageBucket: "esp-test-6caf4.appspot.com",
+  messagingSenderId: "552971190051",
+  appId: "1:552971190051:web:b9f7c6758b0be250fd5696"
+  }

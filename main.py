@@ -31,7 +31,8 @@ def calculate_position():
     rssi_values = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     connect_to_RTDB()
     ssids = get_modules_id("9707274")
-
+    model_id = get_model_id("9707274")
+    boundaries = get_boundaries("9707274")
     while True:
         i += 1
         refresh_data()
@@ -50,15 +51,15 @@ def calculate_position():
 
             i = 0
             pos = localizer.getNodePosition(rssi_values)
-            if pos[0] < 0:
+            if pos[0] < boundaries['min']['x']:
                 pos[0] = 0
-            if pos[0] > 14:
+            if pos[0] > boundaries['max']['x']:
                 pos[0] = 14
-            if pos[1] > 1.5:
+            if pos[1] > boundaries['max']['y']:
                 pos[1] = 1.5
-            if pos[1] < 0:
+            if pos[1] < boundaries['min']['y']:
                 pos[1] = 0
-            write_position("modelWorkers/"+modelId+"/gena/coordinates", pos[0], pos[1])
+            write_position("modelWorkers/"+model_id+"/gena/coordinates", pos[0], pos[1])
 
             rssi_values = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
@@ -66,5 +67,5 @@ def calculate_position():
 
 
 def main():
-
+    calculate_position()
 main()

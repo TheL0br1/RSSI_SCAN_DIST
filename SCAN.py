@@ -110,10 +110,17 @@ class RSSI_Localizer(object):
         apNodes = []
         for i in range(len(self.accessPoints)):
             ap = self.accessPoints[i]
-            distanceFromAP = self.getDistanceFromAP(
-                ap,
-                signalStrengths[i]
-            )
+            try:
+                distanceFromAP = self.getDistanceFromAP(
+                    ap,
+                    signalStrengths[i]
+                )
+            except:
+                print("indexError occurred")
+                distanceFromAP = self.getDistanceFromAP(
+                    ap,
+                    signalStrengths[i]
+                )
             apNodes.append({
                 'distance': distanceFromAP['distance'],
                 'x': ap['location']['x'],

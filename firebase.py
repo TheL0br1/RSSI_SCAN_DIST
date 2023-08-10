@@ -9,17 +9,20 @@ def connect_to_RTDB():
         'databaseURL': 'https://bau-navi-default-rtdb.europe-west1.firebasedatabase.app/'
     })
 
-
 def write_position(node, x, y):
     ref = db.reference(node)
     ref.set({
         'x': float(x),
         'y': float(y)
     })
+
 def get_model_id(main_module_id):
-    ref = db.reference("modelSensors/" + main_module_id + "modelId")
+    #/modelSensors/9707274/modelId
+    ref = db.reference("modelSensors/" + main_module_id + "/modelId")
     data = ref.get()
-    print(data.items())
+    print(data)
+    return data
+
 def get_modules_id(main_module_id):
     ref = db.reference("modelSensors/"+main_module_id+"/floors/"+main_module_id+"/modules/")
     data = ref.get()
@@ -51,6 +54,14 @@ def get_modules_id(main_module_id):
 
         # Вывод полученного массива accessPoints
         print(accessPoints)
-        return ssid
+        print(ssids)
+        return ssids
     else:
         print("No user data found.")
+
+def get_boundaries(main_module_id):
+    ref = db.reference("modelSensors/" + main_module_id + "/floors/" + main_module_id + "/boundaries/")
+    data = ref.get()
+    #print(data['max'])
+    return data
+
