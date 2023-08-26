@@ -1,15 +1,15 @@
 import time
-
+import config
 import matplotlib.pyplot as plt
+import json
 from win32wifi import Win32Wifi as ww
 
 import SCAN as rssi
-from config import accessPoints
+
 from firebase import *
 
-fig, ax = plt.subplots()
 accessPoints_s = sorted(accessPoints, key=lambda x: (x['ssid']))
-
+main_module_id = ""
 
 def refresh_data():
     interfaces = ww.getWirelessInterfaces()
@@ -60,12 +60,17 @@ def calculate_position():
             if pos[1] < boundaries['min']['y']:
                 pos[1] = boundaries['min']['y']
             write_position("modelWorkers/"+model_id+"/gena/coordinates", pos[0], pos[1])
-
+            print(f"x: {pos[0]}, y: {pos[1]}")
             rssi_values = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
         time.sleep(0.40)
 
 
 def main():
+    with open("config.json", "r") as jsonfile:
+        data = json.load(jsonfile)
+        main_module_id = str(data["main_module_id"])
+        print(f"Main module id {main_module_id}")
     calculate_position()
+    time.sleep(99)
 main()
