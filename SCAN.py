@@ -27,22 +27,25 @@ class RSSI_Scan(object):
 
     @staticmethod
     def getQuality(raw_cell):
-        quality = raw_cell.split('Signal             : ')[1]
+        quality = raw_cell.split('Signal             :')[1]
         quality = quality.split('\r\n')[0]
         quality = int(quality.strip('%  '))
         return quality
 
     @staticmethod
     def getSignalLevel(raw_cell):
-        signal = raw_cell.split('Signal             : ')[1]
-        signal = signal.split('\r\n')[0]
-        signal = int(signal.strip('%  '))
-        return signal
+        try:
+            signal = raw_cell.split('Signal ')[1]
+            signal = signal.split(': ')[1]
+            signal = signal.split('\r\n')[0]
+            signal = int(signal.strip('%  '))
+            return signal
+        except:
+            pass
 
     def parseCell(self, raw_cell):
         cell = {
             'ssid': self.getSSID(raw_cell),
-            'quality': self.getQuality(raw_cell),
             'signal': self.getSignalLevel(raw_cell)
         }
         return cell
@@ -104,6 +107,7 @@ class RSSI_Localizer(object):
         beta = beta_numerator / beta_denominator
         distanceFromAP = round(((10 ** beta) * accessPoint['reference']['distance']), 4)
         accessPoint.update({'distance': distanceFromAP})
+        print(f"{signalStrength}, {accessPoint}")
         return accessPoint
 
     def getDistancesForAllAPs(self, signalStrengths):
@@ -116,11 +120,9 @@ class RSSI_Localizer(object):
                     signalStrengths[i]
                 )
             except:
-                print("indexError occurred")
-                distanceFromAP = self.getDistanceFromAP(
-                    ap,
-                    signalStrengths[i]
-                )
+                distanceFromAP = {'distance' : 0}
+                print("ERROR")
+
             apNodes.append({
                 'distance': distanceFromAP['distance'],
                 'x': ap['location']['x'],

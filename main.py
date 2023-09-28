@@ -8,7 +8,6 @@ import SCAN as rssi
 
 from firebase import *
 
-accessPoints_s = sorted(accessPoints, key=lambda x: (x['ssid']))
 main_module_id = ""
 
 def refresh_data():
@@ -30,22 +29,39 @@ def calculate_position():
     i = 0
     rssi_values = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     connect_to_RTDB()
-    ssids = get_modules_id("9707274")
+    ssids = sorted(get_modules_id("9707274"))
     model_id = get_model_id("9707274")
     boundaries = get_boundaries("9707274")
+    accessPoints_s = sorted(accessPoints, key=lambda x: (x['ssid']))
+
     while True:
         i += 1
         refresh_data()
         rssi_scanner = rssi.RSSI_Scan("wlanapi")
-        # ap_info1 = rssi_scanner.getRawNetworkScan(sudo=True)
-        # decoded_string = ap_info1['output'].decode('cp866')
-        # print(decoded_string)
-        localizer = rssi.RSSI_Localizer(accessPoints=accessPoints_s)
         ap_info = rssi_scanner.getAPinfo(networks=ssids, sudo=True)
         ap_info = sorted(ap_info, key=lambda x: (x['ssid']))
-        rssi_values = [sum(pair) for pair in zip(rssi_values, [ap['signal'] / 2 - 100 for ap in ap_info])]
+        flag = False
+        for x in ap_info:
+            if x['signal'] is None:
+                i-=1
+                flag = True
+        if len(ap_info) < len(accessPoints_s):
+            flag = True
+
+        if flag:
+            continue
+        accessPoints_b = []
+        for x in ap_info:
+            for x2 in accessPoints_s:
+                if x2['ssid'] == x['ssid']:
+                    accessPoints_b.append(x2)
+        localizer = rssi.RSSI_Localizer(accessPoints=accessPoints_b)
+        try:
+            rssi_values = [sum(pair) for pair in zip(rssi_values, [ap['signal'] / 2 - 100 for ap in ap_info])]
+        except:
+            pass
         print(ap_info)
-        if len(rssi_values) >= 3 and i >= 10:
+        if len(rssi_values) >= 3 and i >= 3:
             rssi_values = [x / (i) for x in rssi_values]
             print(rssi_values)
 
@@ -63,7 +79,7 @@ def calculate_position():
             print(f"x: {pos[0]}, y: {pos[1]}")
             rssi_values = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
-        time.sleep(0.40)
+        time.sleep(2)
 
 
 def main():
