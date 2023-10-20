@@ -46,6 +46,7 @@ def calculate_position():
                 i-=1
                 flag = True
         if len(ap_info) < len(accessPoints_s):
+            i-=1
             flag = True
 
         if flag:
@@ -62,7 +63,7 @@ def calculate_position():
             pass
         print(ap_info)
         if len(rssi_values) >= 3 and i >= 3:
-            rssi_values = [x / (i) for x in rssi_values]
+            rssi_values = [x / i for x in rssi_values]
             print(rssi_values)
 
             i = 0
