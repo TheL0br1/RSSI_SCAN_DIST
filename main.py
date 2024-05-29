@@ -16,7 +16,7 @@ def refresh_data():
     handle = ww.WlanOpenHandle()
     for idx, interface in enumerate(interfaces):
         #  print(
-        #     "\n  {:d}\n  GUID: [{:s}]\n  Description: [{:s}]".format(idx, interface.guid_string, interface.description))
+        #ое     "\n  {:d}\n  GUID: [{:s}]\n  Description: [{:s}]".format(idx, interface.guid_string, interface.description))
         try:
             scan_result = ww.WlanScan(handle, interface.guid)
         except:
@@ -29,9 +29,9 @@ def calculate_position():
     i = 0
     rssi_values = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     connect_to_RTDB()
-    ssids = sorted(get_modules_id("9707274"))
-    model_id = get_model_id("9707274")
-    boundaries = get_boundaries("9707274")
+    ssids = sorted(get_modules_id("6396429"))
+    model_id = get_model_id("6396429")
+    boundaries = get_boundaries("6396429")
     accessPoints_s = sorted(accessPoints, key=lambda x: (x['ssid']))
 
     while True:
